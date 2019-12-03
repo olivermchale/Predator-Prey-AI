@@ -4,16 +4,22 @@ breed [deer a-deer]
 breed [moose a-moose]
 breed [sheep a-sheep]
 
+turtles-own [ energy ]
+patches-own [ grass-density ]
+
 to setup
   clear-all
-  ask patches [set pcolor green]
+  ask patches [
+    set pcolor green
+    set grass-density 10 ;; random-float 10.0
+    recolor-grass ;;
+  ]
   setup-wolves
   setup-bison
   setup-deer
   setup-moose
   setup-sheep
   reset-ticks
-  update-graph
 end
 
 to setup-wolves
@@ -24,6 +30,7 @@ to setup-wolves
    setxy random-xcor random-ycor
    set shape "wolf"
    set size 3
+   set energy 100
   ]
 end
 
@@ -35,6 +42,7 @@ to setup-bison
     setxy random-xcor random-ycor
     set shape "bison"
     set size 2
+    set energy 100
   ]
 end
 
@@ -45,6 +53,7 @@ to setup-deer
     setxy random-xcor random-ycor
     set shape "deer"
     set size 1
+    set energy 100
   ]
 end
 
@@ -55,6 +64,7 @@ to setup-moose
     setxy random-xcor random-ycor
     set shape "moose"
     set size 2
+    set energy 100
   ]
 end
 
@@ -65,6 +75,7 @@ to setup-sheep
     set color white
     setxy random-xcor random-ycor
     set shape "sheep"
+    set energy 100
   ]
 end
 
@@ -76,6 +87,12 @@ to go
   move-sheep
   if not any? turtles [ stop ]
   tick
+  update-graph
+  ask turtles
+  [
+    should-die
+  ]
+  regrow-grass
 end
 
 to move-wolves
@@ -83,6 +100,7 @@ to move-wolves
   [
     wiggle
     forward 0.8
+    set energy energy - movement-cost
     ask bison-here [die]
     ask deer-here  [die]
     ask moose-here [die]
@@ -93,32 +111,40 @@ end
 to move-bison
   ask bison
   [
+    eat-grass
     wiggle
     forward 0.3
+    set energy energy - movement-cost
   ]
 end
 
 to move-deer
   ask deer
   [
+    eat-grass
     wiggle
-    forward 1.0
+    forward 0.9
+    set energy energy - movement-cost
   ]
 end
 
 to move-moose
   ask moose
   [
+    eat-grass
     wiggle
     forward 0.5
+    set energy energy - movement-cost
   ]
 end
 
 to move-sheep
   ask sheep
   [
+    eat-grass
     wiggle
     forward 0.5
+    set energy energy - movement-cost
   ]
 end
 
@@ -142,6 +168,45 @@ end
 
 to wiggle
   right 45 - (random 90)
+end
+
+to should-die
+  if energy < 0
+  [
+    die
+  ]
+end
+
+;;PREDITOR PRAY DECLORATIONS
+
+
+;;GRASS GENERATION CODE
+
+to recolor-grass
+  ;;  set pcolor scale-color green grass 0 20
+  set pcolor scale-color green (10 - grass-density) -10 20
+end
+
+;; regrow the grass
+to regrow-grass
+  ask patches [
+    set grass-density grass-density + grass-growth-rate
+    if grass-density > 10.0 [
+      set grass-density 10.0
+    ]
+    recolor-grass
+  ]
+end
+
+to eat-grass
+  ;; check to make sure there is grass here
+  if ( grass-density >= nrg-gain-from-grass ) [
+    ;; increment the sheep's energy
+    set energy energy + nrg-gain-from-grass
+    ;; decrement the grass
+    set grass-density grass-density - nrg-gain-from-grass
+    recolor-grass
+  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -214,7 +279,7 @@ num-of-wolves
 num-of-wolves
 0
 100
-68.0
+0.0
 1
 1
 NIL
@@ -244,7 +309,7 @@ num-of-bison
 num-of-bison
 0
 100
-15.0
+8.0
 1
 1
 NIL
@@ -259,7 +324,7 @@ num-of-deer
 num-of-deer
 0
 100
-26.0
+13.0
 1
 1
 NIL
@@ -274,7 +339,7 @@ num-of-moose
 num-of-moose
 0
 100
-26.0
+8.0
 1
 1
 NIL
@@ -300,7 +365,52 @@ PENS
 "bison" 1.0 0 -6459832 true "" ""
 "deer" 1.0 0 -955883 true "" ""
 "moose" 1.0 0 -987046 true "" ""
-"sheep" 1.0 0 -1 true "" ""
+"sheep" 1.0 0 -534828 true "" ""
+
+SLIDER
+665
+73
+837
+106
+movement-cost
+movement-cost
+0
+100
+1.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+797
+205
+969
+238
+grass-growth-rate
+grass-growth-rate
+0
+2.0
+0.1
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+660
+272
+832
+305
+nrg-gain-from-grass
+nrg-gain-from-grass
+0
+2.0
+2.0
+0.1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
