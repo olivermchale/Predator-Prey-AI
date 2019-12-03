@@ -101,10 +101,54 @@ to move-wolves
     wiggle
     forward 0.8
     set energy energy - movement-cost
-    ask bison-here [die]
-    ask deer-here  [die]
-    ask moose-here [die]
-    ask sheep-here [die]
+    kill-bison
+    kill-deer
+    kill-moose
+    kill-sheep
+    ;;ask bison-here [die]
+    ;;ask deer-here  [die]
+    ;;ask moose-here [die]
+    ;;ask sheep-here [die]
+  ]
+end
+
+to kill-bison
+  if any? bison-here [
+    let target one-of bison-here
+    ask target [
+      die
+    ]
+    set energy 100
+  ]
+end
+
+to kill-deer
+  if any? deer-here [
+    let target one-of deer-here
+    ask target [
+      die
+    ]
+    set energy 100
+  ]
+end
+
+to kill-moose
+  if any? moose-here [
+    let target one-of moose-here
+    ask target [
+      die
+    ]
+    set energy 100
+  ]
+end
+
+to kill-sheep
+  if any? sheep-here [
+    let target one-of sheep-here
+    ask target [
+      die
+    ]
+    set energy 100
   ]
 end
 
@@ -210,13 +254,13 @@ to eat-grass
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
-10
-647
-448
+237
+28
+1077
+869
 -1
 -1
-13.0
+25.21212121212121
 1
 10
 1
@@ -279,7 +323,7 @@ num-of-wolves
 num-of-wolves
 0
 100
-0.0
+6.0
 1
 1
 NIL
@@ -346,10 +390,10 @@ NIL
 HORIZONTAL
 
 PLOT
-5
-336
-205
-486
+18
+675
+218
+825
 Population over Time
 Time
 Population
@@ -368,10 +412,10 @@ PENS
 "sheep" 1.0 0 -534828 true "" ""
 
 SLIDER
-665
-73
-837
-106
+8
+347
+180
+380
 movement-cost
 movement-cost
 0
@@ -383,25 +427,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-797
-205
-969
-238
+4
+406
+176
+439
 grass-growth-rate
 grass-growth-rate
 0
 2.0
-0.1
+0.3
 0.1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-660
-272
-832
-305
+12
+459
+184
+492
 nrg-gain-from-grass
 nrg-gain-from-grass
 0
@@ -546,31 +590,24 @@ Circle -7500403 true true 0 0 300
 
 deer
 false
-8
-Polygon -1184463 true false 195 270 210 270 210 225 240 195 195 195
-Polygon -1 true false 225 90 210 60 180 45 150 15 180 30 180 0 195 30 225 0 210 30 225 60 270 45 270 30 255 15 285 30 285 15 300 45 285 45 300 75 270 75
-Polygon -7500403 true false 276 85 285 105 302 99 294 83
-Polygon -7500403 true false 219 85 210 105 193 99 201 83
-Rectangle -6459832 true false 75 105 210 210
-Circle -1 true false 239 101 16
-Circle -6459832 true false 132 142 8
-Circle -6459832 true false 150 90 120
-Polygon -1184463 true false 233 105 255 150 270 150 293 105
-Circle -1184463 true false 229 57 67
-Rectangle -1184463 true false 164 208 179 283
-Polygon -1184463 true false 45 270 30 270 30 225 15 180 45 195
-Circle -6459832 true false 6 101 114
-Rectangle -1184463 true false 65 206 80 281
-Circle -1184463 true false 221 41 67
-Polygon -1184463 true false -75 480 -90 450 -105 435 -75 450 -195 585 -90 510 -90 555 -75 540 -75 525 -75 525 -90 540 -105 585 -105 585
-Polygon -1 false false 225 90 210 60 180 45 150 15 180 30 180 0 195 30 225 0 210 30 225 60 270 45 270 30 255 15 285 30 285 15 300 45 285 45 300 75 270 75
-Rectangle -955883 true false 60 120 210 135
-Rectangle -955883 true false 60 165 210 180
-Circle -16777216 true false 240 75 0
-Circle -16777216 true false 270 75 0
-Polygon -2064490 true false 255 135 270 135 255 120 255 135
-Polygon -13345367 true false 240 60 240 60 255 75 240 75 240 60
-Polygon -13345367 true false 270 60 270 75 285 75 270 60
+9
+Polygon -1 true false 255 90 270 60 240 45 240 30 255 60 255 45 270 30 255 60 270 90
+Polygon -1 true false 225 90 225 60 195 45 195 30 210 60 210 45 225 30 210 60 240 90
+Polygon -1184463 true false 195 285 210 285 210 240 240 210 195 210
+Rectangle -1184463 true false 65 221 80 296
+Circle -6459832 true false 150 105 120
+Polygon -1184463 true false 218 120 240 165 255 165 278 120
+Circle -1184463 true false 214 72 67
+Rectangle -1184463 true false 164 223 179 298
+Polygon -1184463 true false 45 285 30 285 30 240 15 195 45 210
+Circle -6459832 true false 10 120 106
+Rectangle -6459832 true false 75 120 195 225
+Polygon -6459832 true false 30 135 15 105 15 135 30 150
+Polygon -2064490 true false 240 135 255 135 240 150 240 135
+Polygon -16777216 true false 225 90 240 105 225 105
+Polygon -16777216 true false 255 90 270 105 255 105
+Rectangle -955883 true false 75 135 165 150
+Rectangle -955883 true false 75 165 165 180
 
 dot
 false
@@ -661,26 +698,24 @@ Line -7500403 true 150 0 150 150
 
 moose
 false
-4
-Polygon -1 true false 225 75 180 60 210 60 180 45 165 60 165 45 180 30 210 45 195 30 180 30 195 15 210 45 225 30 240 45 255 45 270 30 285 45 300 15 300 45 285 60 300 60 285 75 300 90 255 75
-Polygon -6459832 true false 195 285 225 285 240 240 225 210 195 210
-Rectangle -6459832 true false 65 210 105 281
-Rectangle -6459832 true false 135 210 164 283
-Circle -6459832 true false 68 125 88
-Circle -16777216 true false 70 95 162
-Circle -16777216 true false 150 75 120
-Polygon -6459832 true false 45 270 30 270 30 225 15 180 90 195
-Circle -16777216 true false 10 105 136
-Polygon -7500403 true false 156 355 165 375 182 369 174 353
-Polygon -1 true false 129 340 120 360 103 354 111 338
-Polygon -1 true false -15 480 -15 480 -60 450 -30 450 0 450 15 450 15 480 15 420 30 450 30 480 0 495 15 495
-Polygon -6459832 true false 218 105 240 150 285 180 278 105
-Circle -6459832 true false 209 52 76
-Circle -1184463 true true 270 150 0
-Circle -1184463 true true 195 150 0
-Circle -1 true false 270 150 0
-Polygon -1 true false 240 105 240 105 225 105 225 90 240 105 240 105
-Polygon -1 true false 255 105 255 90 270 105 255 105
+9
+Polygon -1 true false 240 75 210 45 180 30 180 15 225 45 210 15 240 45 240 15 255 45 255 60 285 60 270 45 255 15 270 30 285 0 285 30 300 15 285 45 285 75 255 75 240 75 270 60 270 45 270 105
+Rectangle -6459832 true false 50 176 75 255
+Circle -6459832 true false 203 65 88
+Circle -16777216 true false 72 67 158
+Circle -16777216 true false 150 60 150
+Polygon -6459832 true false 233 105 255 135 300 165 293 105
+Circle -6459832 true false 225 53 74
+Rectangle -6459832 true false 150 180 179 255
+Polygon -6459832 true false 45 270 30 270 15 225 15 180 45 195
+Circle -16777216 true false -5 75 136
+Polygon -6459832 true false 195 270 210 270 240 225 225 195 195 195
+Polygon -16777216 true false 120 105 150 150 167 144 159 128
+Polygon -16777216 true false 174 130 165 150 148 144 135 105
+Polygon -1 true false 165 150
+Polygon -1 true false 255 75 240 90 255 90 255 75 255 90
+Polygon -1 true false 270 90 270 75 285 75 270 90 270 90
+Polygon -2064490 true false 270 135 285 120 285 135 270 135
 
 pentagon
 false
