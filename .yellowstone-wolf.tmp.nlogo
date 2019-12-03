@@ -140,7 +140,7 @@ to kill-deer
     ask target [
       die
     ]
-    set energy
+    set energy energy + nrg-gain-from-deer
   ]
 end
 
@@ -150,7 +150,7 @@ to kill-moose
     ask target [
       die
     ]
-    set energy 130
+    set energy energy + nrg-gain-from-moose
   ]
 end
 
@@ -160,7 +160,7 @@ to kill-sheep
     ask target [
       die
     ]
-    set energy 130
+    set energy energy + nrg-gain-from-sheep
   ]
 end
 
@@ -339,7 +339,7 @@ num-of-wolves
 num-of-wolves
 0
 100
-24.0
+0.0
 1
 1
 NIL
@@ -354,7 +354,7 @@ num-of-sheep
 num-of-sheep
 0
 100
-30.0
+15.0
 1
 1
 NIL
@@ -369,7 +369,7 @@ num-of-bison
 num-of-bison
 0
 100
-0.0
+16.0
 1
 1
 NIL
@@ -384,7 +384,7 @@ num-of-deer
 num-of-deer
 0
 100
-0.0
+15.0
 1
 1
 NIL
@@ -399,7 +399,7 @@ num-of-moose
 num-of-moose
 0
 100
-0.0
+19.0
 1
 1
 NIL
@@ -451,7 +451,7 @@ grass-growth-rate
 grass-growth-rate
 0
 2.0
-0.3
+0.4
 0.1
 1
 NIL
@@ -466,7 +466,7 @@ nrg-gain-from-grass
 nrg-gain-from-grass
 0
 2.0
-0.0
+2.0
 0.1
 1
 NIL
@@ -481,22 +481,22 @@ nrg-gain-from-bison
 nrg-gain-from-bison
 0
 100
-20.0
+39.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1143
-159
-1315
-192
+1121
+146
+1293
+179
 nrg-gain-from-deer
 nrg-gain-from-deer
 0
 100
-6.0
+29.0
 1
 1
 NIL
@@ -511,7 +511,7 @@ nrg-gain-from-moose
 nrg-gain-from-moose
 0
 100
-15.0
+40.0
 1
 1
 NIL
@@ -526,7 +526,7 @@ nrg-gain-from-sheep
 nrg-gain-from-sheep
 0
 100
-10.0
+41.0
 1
 1
 NIL
