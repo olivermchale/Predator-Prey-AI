@@ -13,7 +13,6 @@ to setup
   setup-moose
   setup-sheep
   reset-ticks
-  update-graph
 end
 
 to setup-wolves
@@ -76,6 +75,7 @@ to go
   move-sheep
   if not any? turtles [ stop ]
   tick
+  update-graph
 end
 
 to move-wolves
@@ -102,7 +102,7 @@ to move-deer
   ask deer
   [
     wiggle
-    forward 1.0
+    forward 1.
   ]
 end
 
@@ -214,7 +214,7 @@ num-of-wolves
 num-of-wolves
 0
 100
-68.0
+2.0
 1
 1
 NIL
@@ -300,7 +300,7 @@ PENS
 "bison" 1.0 0 -6459832 true "" ""
 "deer" 1.0 0 -955883 true "" ""
 "moose" 1.0 0 -987046 true "" ""
-"sheep" 1.0 0 -1 true "" ""
+"sheep" 1.0 0 -534828 true "" ""
 
 @#$#@#$#@
 ## WHAT IS IT?
