@@ -4,30 +4,55 @@ breed [deer a-deer]
 breed [moose a-moose]
 breed [sheep a-sheep]
 
+
+wolves-own[pray]
+
 turtles-own [ energy ]
 patches-own [ grass-density ]
 
 to setup
   clear-all
+
   ask patches [
     set pcolor green
     set grass-density 10 ;; random-float 10.0
     recolor-grass ;;
   ]
+
+  setup-sheep
   setup-wolves
   setup-bison
   setup-deer
   setup-moose
-  setup-sheep
+
   reset-ticks
+end
+
+
+to setup-hunt
+  ask wolves [
+    ;; if at target, choose a new random target
+    if distance pray = 0
+      [ set pray one-of sheep
+        face pray ]
+    ;; move towards target.  once the distance is less than 1,
+    ;; use move-to to land exactly on the target.
+    ifelse distance pray < 1
+      [ move-to pray ]
+      [ fd 1 ]
+
+  ]
 end
 
 to setup-wolves
   create-wolves num-of-wolves
   ask wolves
   [
+
    set color grey
    setxy random-xcor random-ycor
+   set pray one-of sheep
+   face pray
    set shape "wolf"
    set size 3
    set energy 100
@@ -80,7 +105,7 @@ to setup-sheep
 end
 
 to go
-  move-wolves
+
   move-bison
   move-deer
   move-moose
@@ -92,6 +117,7 @@ to go
   [
     should-die
   ]
+  setup-hunt
   regrow-grass
 end
 
@@ -323,7 +349,7 @@ num-of-wolves
 num-of-wolves
 0
 100
-6.0
+5.0
 1
 1
 NIL
@@ -338,7 +364,7 @@ num-of-sheep
 num-of-sheep
 0
 100
-10.0
+5.0
 1
 1
 NIL
@@ -353,7 +379,7 @@ num-of-bison
 num-of-bison
 0
 100
-8.0
+0.0
 1
 1
 NIL
@@ -368,7 +394,7 @@ num-of-deer
 num-of-deer
 0
 100
-13.0
+0.0
 1
 1
 NIL
@@ -383,7 +409,7 @@ num-of-moose
 num-of-moose
 0
 100
-8.0
+0.0
 1
 1
 NIL
@@ -420,7 +446,7 @@ movement-cost
 movement-cost
 0
 100
-1.0
+0.5
 1
 1
 NIL
@@ -435,7 +461,7 @@ grass-growth-rate
 grass-growth-rate
 0
 2.0
-0.3
+0.2
 0.1
 1
 NIL
@@ -450,7 +476,7 @@ nrg-gain-from-grass
 nrg-gain-from-grass
 0
 2.0
-2.0
+1.5
 0.1
 1
 NIL
