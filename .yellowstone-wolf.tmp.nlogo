@@ -7,6 +7,8 @@ breed [sheep a-sheep]
 turtles-own [ energy ]
 patches-own [ grass-density ]
 
+wolves-own [ prey ]
+
 to setup
   clear-all
   ask patches [
@@ -26,6 +28,7 @@ to setup-wolves
   create-wolves num-of-wolves
   ask wolves
   [
+   set prey nobody
    set color grey
    setxy random-xcor random-ycor
    set shape "wolf"
@@ -98,30 +101,42 @@ end
 to move-wolves
   ask wolves
   [
-    wiggle
+    ifelse prey = nobody [
+
+    let xd xcor +
+    let xy ycor + 100
+    let candidate one-of (sheep-at -4 4)
+    set prey candidate
+    ifelse candidate = nobody
+      [ wiggle ]
+      [ face candidate
+        ask candidate [
+          set size 3
+      ]
+      set size 5
+      ]
+    ] [
+       face prey
+    ]
+
     forward 0.8
-    set energy energy - movement-cost
     kill-bison
     kill-deer
     kill-moose
     kill-sheep
-    reproduce
+    ;;wiggle
+    ;;forward 0.8
+    ;; set energy energy - movement-cost
+    ;;kill-bison
+    ;;kill-deer
+    ;;kill-moose
+    ;;kill-sheep
     ;;ask bison-here [die]
     ;;ask deer-here  [die]
     ;;ask moose-here [die]
     ;;ask sheep-here [die]
   ]
-end
 
-to reproduce
-  if any? other turtles-here
-  [
-    if energy > 120
-    [
-      set energy  energy  / 2
-      hatch 1 [set energy 50]
-    ]
-  ]
 end
 
 to kill-bison
@@ -130,7 +145,7 @@ to kill-bison
     ask target [
       die
     ]
-    set energy energy + nrg-gain-from-bison
+    set energy 100
   ]
 end
 
@@ -140,7 +155,7 @@ to kill-deer
     ask target [
       die
     ]
-    set energy energy + nrg-gain-from-deer
+    set energy 100
   ]
 end
 
@@ -150,7 +165,7 @@ to kill-moose
     ask target [
       die
     ]
-    set energy energy + nrg-gain-from-moose
+    set energy 100
   ]
 end
 
@@ -160,7 +175,7 @@ to kill-sheep
     ask target [
       die
     ]
-    set energy energy + nrg-gain-from-sheep
+    set energy 100
   ]
 end
 
@@ -171,7 +186,6 @@ to move-bison
     wiggle
     forward 0.3
     set energy energy - movement-cost
-    reproduce
   ]
 end
 
@@ -182,7 +196,6 @@ to move-deer
     wiggle
     forward 0.9
     set energy energy - movement-cost
-    reproduce
   ]
 end
 
@@ -193,7 +206,6 @@ to move-moose
     wiggle
     forward 0.5
     set energy energy - movement-cost
-    reproduce
   ]
 end
 
@@ -204,7 +216,6 @@ to move-sheep
     wiggle
     forward 0.5
     set energy energy - movement-cost
-    reproduce
   ]
 end
 
@@ -339,7 +350,7 @@ num-of-wolves
 num-of-wolves
 0
 100
-0.0
+1.0
 1
 1
 NIL
@@ -369,7 +380,7 @@ num-of-bison
 num-of-bison
 0
 100
-16.0
+0.0
 1
 1
 NIL
@@ -384,7 +395,7 @@ num-of-deer
 num-of-deer
 0
 100
-15.0
+0.0
 1
 1
 NIL
@@ -399,7 +410,7 @@ num-of-moose
 num-of-moose
 0
 100
-19.0
+0.0
 1
 1
 NIL
@@ -436,7 +447,7 @@ movement-cost
 movement-cost
 0
 100
-1.0
+0.5
 1
 1
 NIL
@@ -451,7 +462,7 @@ grass-growth-rate
 grass-growth-rate
 0
 2.0
-0.4
+0.2
 0.1
 1
 NIL
@@ -466,68 +477,8 @@ nrg-gain-from-grass
 nrg-gain-from-grass
 0
 2.0
-2.0
+1.5
 0.1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-1122
-89
-1294
-122
-nrg-gain-from-bison
-nrg-gain-from-bison
-0
-100
-39.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-1121
-146
-1293
-179
-nrg-gain-from-deer
-nrg-gain-from-deer
-0
-100
-29.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-1125
-214
-1297
-247
-nrg-gain-from-moose
-nrg-gain-from-moose
-0
-100
-40.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-1124
-274
-1296
-307
-nrg-gain-from-sheep
-nrg-gain-from-sheep
-0
-100
-41.0
-1
 1
 NIL
 HORIZONTAL
@@ -936,6 +887,45 @@ NetLogo 6.0.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="InitialExperiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="3000"/>
+    <enumeratedValueSet variable="grass-growth-rate">
+      <value value="0.3"/>
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="movement-cost">
+      <value value="1"/>
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-bison">
+      <value value="20"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-moose">
+      <value value="20"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-sheep">
+      <value value="20"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-wolves">
+      <value value="15"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="nrg-gain-from-grass">
+      <value value="2"/>
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-deer">
+      <value value="20"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default

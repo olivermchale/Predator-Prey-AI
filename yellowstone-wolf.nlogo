@@ -7,6 +7,8 @@ breed [sheep a-sheep]
 turtles-own [ energy ]
 patches-own [ grass-density ]
 
+wolves-own [ prey ]
+
 to setup
   clear-all
   ask patches [
@@ -26,6 +28,7 @@ to setup-wolves
   create-wolves num-of-wolves
   ask wolves
   [
+   set prey nobody
    set color grey
    setxy random-xcor random-ycor
    set shape "wolf"
@@ -98,13 +101,21 @@ end
 to move-wolves
   ask wolves
   [
-    wiggle
+
+
+    let candidate one-of (turtles-at 10 10)
+    if candidate = nobody [stop]
+    set prey candidate
+    ask candidate [set size 10]
+    face candidate
     forward 0.8
-    set energy energy - movement-cost
-    kill-bison
-    kill-deer
-    kill-moose
-    kill-sheep
+    ;;wiggle
+    ;;forward 0.8
+    ;; set energy energy - movement-cost
+    ;;kill-bison
+    ;;kill-deer
+    ;;kill-moose
+    ;;kill-sheep
     ;;ask bison-here [die]
     ;;ask deer-here  [die]
     ;;ask moose-here [die]
@@ -338,7 +349,7 @@ num-of-sheep
 num-of-sheep
 0
 100
-10.0
+1.0
 1
 1
 NIL
@@ -353,7 +364,7 @@ num-of-bison
 num-of-bison
 0
 100
-8.0
+1.0
 1
 1
 NIL
@@ -368,7 +379,7 @@ num-of-deer
 num-of-deer
 0
 100
-13.0
+1.0
 1
 1
 NIL
@@ -383,7 +394,7 @@ num-of-moose
 num-of-moose
 0
 100
-8.0
+1.0
 1
 1
 NIL
@@ -420,7 +431,7 @@ movement-cost
 movement-cost
 0
 100
-1.0
+0.5
 1
 1
 NIL
@@ -435,7 +446,7 @@ grass-growth-rate
 grass-growth-rate
 0
 2.0
-0.3
+0.2
 0.1
 1
 NIL
@@ -450,7 +461,7 @@ nrg-gain-from-grass
 nrg-gain-from-grass
 0
 2.0
-2.0
+1.5
 0.1
 1
 NIL
@@ -860,6 +871,45 @@ NetLogo 6.0.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="InitialExperiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="3000"/>
+    <enumeratedValueSet variable="grass-growth-rate">
+      <value value="0.3"/>
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="movement-cost">
+      <value value="1"/>
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-bison">
+      <value value="20"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-moose">
+      <value value="20"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-sheep">
+      <value value="20"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-wolves">
+      <value value="15"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="nrg-gain-from-grass">
+      <value value="2"/>
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-of-deer">
+      <value value="20"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
